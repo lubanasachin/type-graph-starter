@@ -12,6 +12,9 @@ export class Post {
   @Property({ type: "text" })
   title!: string;
 
+  @Field(() => [String])
+  comments!: string[];
+
   @Field(() => String)
   @Property({ type: "date" })
   createdAt = new Date();

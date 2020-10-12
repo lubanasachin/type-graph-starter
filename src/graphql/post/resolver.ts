@@ -1,4 +1,12 @@
-import { Query, Mutation, Resolver, Ctx, Arg } from "type-graphql";
+import {
+  Query,
+  Mutation,
+  Resolver,
+  Ctx,
+  Arg,
+  FieldResolver,
+  Root,
+} from "type-graphql";
 
 import { Post } from "../../entities/post";
 import {
@@ -8,7 +16,7 @@ import {
   PostDeleteResponse,
 } from "../../type";
 
-@Resolver()
+@Resolver(Post)
 export class PostResolver {
   @Query(() => [Post])
   async posts(@Ctx() { em }: MyContext): Promise<Post[]> {
@@ -21,6 +29,12 @@ export class PostResolver {
     @Ctx() { em }: MyContext
   ): Promise<Post | null> {
     return em.findOne(Post, { id });
+  }
+
+  @FieldResolver(() => [String])
+  comments(@Root() post: Post): string[] {
+    console.log(post);
+    return ["test comments"];
   }
 
   @Mutation(() => Post)
